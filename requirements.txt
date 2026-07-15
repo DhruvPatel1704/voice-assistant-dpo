@@ -1,0 +1,26 @@
+﻿# Core ML
+torch
+transformers
+trl
+peft
+datasets
+accelerate
+
+# Fine-tuning on GPU (Linux GPU box; may not install on native Windows)
+bitsandbytes
+
+# Serving (Linux GPU box)
+vllm
+
+# Voice pipeline
+faster-whisper
+
+# API
+fastapi
+uvicorn
+
+# Experiment tracking
+wandb
+
+# Offline dataset generation / labeling only
+openai
