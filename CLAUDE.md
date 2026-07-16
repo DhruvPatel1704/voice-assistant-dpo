@@ -16,5 +16,11 @@ Python 3.x, PyTorch, Hugging Face TRL + PEFT, faster-whisper, vLLM, FastAPI.
 - Config-driven, seeded runs. Log every run to W&B or MLflow.
 - Keep the base model small during iteration (1.5B to 3B) for fast turnaround.
 
+## Decisions
+- Base model: Qwen2.5-3B-Instruct (small, fits single-GPU LoRA/QLoRA iteration)
+- GPU: single RTX 4090 (24GB VRAM)
+- Experiment tracking: W&B
+
 ## Test / run
-- TODO: add test and serve commands as they land.
+- Tests: `pytest`
+- Serve: `vllm serve <checkpoint-path> --port 8000` then `uvicorn app.main:app --reload --port 8080` (FastAPI front door, proxies to vLLM)
