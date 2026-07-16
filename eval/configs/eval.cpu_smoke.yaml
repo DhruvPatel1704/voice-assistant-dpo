@@ -1,0 +1,32 @@
+# CPU-only smoke test: no GPU, no vLLM server, no OpenAI key required.
+# Runs a tiny model directly via the hf_transformers backend on both
+# sides, judge disabled, wandb disabled. Just proves the harness plumbing
+# (config -> backend -> generation -> metrics -> report) works end to end.
+seed: 42
+prompts_path: data/eval_prompts.jsonl
+output_dir: eval/results
+
+baseline:
+  name: baseline
+  backend: hf_transformers
+  model: sshleifer/tiny-gpt2
+  device: cpu
+
+candidate:
+  name: candidate
+  backend: hf_transformers
+  model: sshleifer/tiny-gpt2
+  device: cpu
+
+generation:
+  max_tokens: 16
+  temperature: 0.0
+
+judge:
+  provider: openai
+  model: gpt-4o-mini
+  enabled: false
+
+wandb:
+  project: voice-assistant-eval
+  mode: disabled

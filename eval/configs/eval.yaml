@@ -1,0 +1,32 @@
+seed: 42
+prompts_path: data/eval_prompts.jsonl
+output_dir: eval/results
+
+# Both endpoints must be local vLLM OpenAI-compatible servers (see CLAUDE.md
+# hard rules) — never point base_url at api.openai.com.
+baseline:
+  name: baseline
+  backend: vllm
+  base_url: http://localhost:8000/v1
+  model: baseline-model
+  api_key: EMPTY
+
+candidate:
+  name: candidate
+  backend: vllm
+  base_url: http://localhost:8001/v1
+  model: candidate-model
+  api_key: EMPTY
+
+generation:
+  max_tokens: 256
+  temperature: 0.0
+
+judge:
+  provider: openai
+  model: gpt-4o-mini
+  enabled: true
+
+wandb:
+  project: voice-assistant-eval
+  mode: disabled

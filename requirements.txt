@@ -24,3 +24,7 @@ wandb
 
 # Offline dataset generation / labeling only
 openai
+
+# Config + tests
+pyyaml
+pytest

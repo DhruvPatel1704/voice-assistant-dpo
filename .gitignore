@@ -18,10 +18,14 @@ env/
 checkpoints/
 data/*
 !data/.gitkeep
+!data/eval_prompts.jsonl
 
 # Experiment tracking
 wandb/
 mlruns/
+
+# Eval harness output
+eval/results/
 
 # OS / editor
 .DS_Store
