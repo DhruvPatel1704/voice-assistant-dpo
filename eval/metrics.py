@@ -63,7 +63,7 @@ class WinRateStats:
 
 def win_rate_stats(verdicts: Sequence[Verdict]) -> WinRateStats:
     return WinRateStats(
-        wins=sum(1 for v in verdicts if v == "a"),
-        losses=sum(1 for v in verdicts if v == "b"),
+        wins=sum(1 for v in verdicts if v == "candidate"),
+        losses=sum(1 for v in verdicts if v == "baseline"),
         ties=sum(1 for v in verdicts if v == "tie"),
     )

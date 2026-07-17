@@ -1,7 +1,9 @@
 # CPU-only smoke test: no GPU, no vLLM server, no OpenAI key required.
 # Runs a tiny model directly via the hf_transformers backend on both
-# sides, judge disabled, wandb disabled. Just proves the harness plumbing
-# (config -> backend -> generation -> metrics -> report) works end to end.
+# sides, wandb disabled. Judge uses the deterministic mock_conciseness
+# provider so the full win-rate flow (position randomization,
+# aggregation, results JSON) is exercised end to end without a real
+# judge backend.
 seed: 42
 prompts_path: data/eval_prompts.jsonl
 output_dir: eval/results
@@ -23,9 +25,9 @@ generation:
   temperature: 0.0
 
 judge:
-  provider: openai
+  provider: mock_conciseness
   model: gpt-4o-mini
-  enabled: false
+  enabled: true
 
 wandb:
   project: voice-assistant-eval

@@ -27,7 +27,7 @@ def test_conciseness_ratio_guards_zero_baseline():
 
 
 def test_win_rate_stats():
-    stats = win_rate_stats(["a", "a", "b", "tie"])
+    stats = win_rate_stats(["candidate", "candidate", "baseline", "tie"])
     assert stats.wins == 2
     assert stats.losses == 1
     assert stats.ties == 1

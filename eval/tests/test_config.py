@@ -16,4 +16,5 @@ def test_load_cpu_smoke_config():
     assert config.baseline.backend == "hf_transformers"
     assert config.baseline.model == "sshleifer/tiny-gpt2"
     assert config.baseline.device == "cpu"
-    assert config.judge.enabled is False
+    assert config.judge.provider == "mock_conciseness"
+    assert config.judge.enabled is True

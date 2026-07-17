@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import time
 from dataclasses import asdict
 from pathlib import Path
@@ -15,7 +16,7 @@ from pathlib import Path
 from eval.clients import make_backend
 from eval.config import EvalConfig, load_config, set_seed
 from eval.dataset import load_prompts
-from eval.judge import OpenAIJudge
+from eval.judge import compare, make_judge
 from eval.metrics import conciseness_stats, latency_stats, win_rate_stats
 
 
@@ -34,11 +35,12 @@ def run(config: EvalConfig) -> dict:
     baseline_results = [baseline_backend.generate(p, **gen_kwargs) for p in prompts]
     candidate_results = [candidate_backend.generate(p, **gen_kwargs) for p in prompts]
 
-    verdicts = []
+    comparisons = []
     if config.judge.enabled:
-        judge = OpenAIJudge(model=config.judge.model)
+        judge = make_judge(config.judge)
+        rng = random.Random(config.seed)
         for prompt, candidate, baseline in zip(prompts, candidate_results, baseline_results):
-            verdicts.append(judge.judge(prompt, candidate.text, baseline.text).winner)
+            comparisons.append(compare(judge, prompt, candidate.text, baseline.text, rng=rng))
 
     report = {
         "num_prompts": len(prompts),
@@ -47,7 +49,8 @@ def run(config: EvalConfig) -> dict:
         "conciseness": asdict(
             conciseness_stats([r.text for r in candidate_results], [r.text for r in baseline_results])
         ),
-        "win_rate": asdict(win_rate_stats(verdicts)) if verdicts else None,
+        "win_rate": asdict(win_rate_stats([c.winner for c in comparisons])) if comparisons else None,
+        "judge_verdicts": [asdict(c) for c in comparisons] if comparisons else None,
     }
 
     output_dir = Path(config.output_dir)
