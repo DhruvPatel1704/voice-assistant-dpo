@@ -1,3 +1,3 @@
 [tool.pytest.ini_options]
 pythonpath = ["."]
-testpaths = ["eval/tests"]
+testpaths = ["eval/tests", "sft/tests"]

@@ -1,0 +1,37 @@
+# CPU-only smoke config: tiny model, tiny dataset slice, no GPU/QLoRA.
+# Not meant to produce a usable adapter -- exists so config parsing, dataset
+# formatting, and object construction (LoraConfig, etc.) can be checked on a
+# laptop without downloading Qwen2.5-3B or the full Alpaca dataset.
+seed: 42
+base_model: sshleifer/tiny-gpt2
+output_dir: sft/adapters/cpu_smoke
+
+dataset:
+  name: tatsu-lab/alpaca
+  split: train
+  num_samples: 8
+  instruction_field: instruction
+  input_field: input
+  output_field: output
+
+lora:
+  r: 4
+  alpha: 8
+  dropout: 0.0
+  target_modules: [c_attn]
+
+training:
+  learning_rate: 0.0002
+  epochs: 1
+  per_device_train_batch_size: 2
+  gradient_accumulation_steps: 1
+  max_seq_length: 64
+  bf16: false
+  logging_steps: 1
+  save_strategy: epoch
+
+wandb:
+  project: voice-assistant-sft
+  mode: disabled
+
+use_qlora: false

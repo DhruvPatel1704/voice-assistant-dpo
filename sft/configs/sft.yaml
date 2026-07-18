@@ -1,0 +1,35 @@
+# Real SFT run: Qwen2.5-3B-Instruct + LoRA on a single RTX 4090.
+# Per CLAUDE.md decisions: base model Qwen2.5-3B-Instruct, single-GPU LoRA/QLoRA.
+seed: 42
+base_model: Qwen/Qwen2.5-3B-Instruct
+output_dir: sft/adapters/qwen2.5-3b-alpaca-lora
+
+dataset:
+  name: tatsu-lab/alpaca
+  split: train
+  num_samples: 2000 # start small; bump toward -1 (full split) once the loop is verified
+  instruction_field: instruction
+  input_field: input
+  output_field: output
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj]
+
+training:
+  learning_rate: 0.0002
+  epochs: 3
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 4
+  max_seq_length: 1024
+  bf16: true
+  logging_steps: 10
+  save_strategy: epoch
+
+wandb:
+  project: voice-assistant-sft
+  mode: disabled
+
+use_qlora: false
